@@ -179,6 +179,4 @@ The platform is ready for AWS Free Tier deployment:
 
 See `.env.example` for AWS-specific configuration.
 
-## License
 
-Internal project - all rights reserved.
