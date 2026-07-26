@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LCA Platform - AI-Driven Sustainability Analysis</title>
+    <link rel="stylesheet" href="/static/css/style.css?v=3">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2 class="logo">LCA<span>Platform</span></h2>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item active" data-page="dashboard"><a href="#dashboard">Dashboard</a></li>
+                <li class="nav-item" data-page="datasets"><a href="#datasets">Datasets</a></li>
+                <li class="nav-item" data-page="predictions"><a href="#predictions">AI Predictions</a></li>
+                <li class="nav-item" data-page="lca"><a href="#lca">LCA Analysis</a></li>
+                <li class="nav-item" data-page="circularity"><a href="#circularity">Circularity</a></li>
+                <li class="nav-item" data-page="sustainability"><a href="#sustainability">Sustainability</a></li>
+                <li class="nav-item" data-page="reports"><a href="#reports">Reports</a></li>
+                <li class="nav-item" data-page="settings"><a href="#settings">Settings</a></li>
+            </ul>
+        </nav>
+        <main class="main-content">
+            <header class="top-bar">
+                <button class="menu-toggle" onclick="toggleSidebar()">&#9776;</button>
+                <h1 id="page-title">Dashboard</h1>
+                <div class="top-bar-actions">
+                    <span class="status-badge" id="api-status">Connected</span>
+                    <span class="user-info" id="user-display">Guest</span>
+                </div>
+            </header>
+            <div class="content-area" id="content-area"></div>
+        </main>
+    </div>
+    <div class="modal-overlay" id="modal-overlay" style="display:none;">
+        <div class="modal" id="modal">
+            <div class="modal-header">
+                <h3 id="modal-title"></h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body"></div>
+        </div>
+    </div>
+    <script src="/static/js/api.js?v=2"></script>
+    <script src="/static/js/charts.js?v=2"></script>
+    <script src="/static/js/app.js?v=2"></script>
+</body>
+</html>
