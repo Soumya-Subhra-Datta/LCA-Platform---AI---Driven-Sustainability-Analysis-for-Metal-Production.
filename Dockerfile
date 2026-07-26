@@ -13,6 +13,8 @@ COPY . .
 
 RUN mkdir -p backend/models backend/outputs/figures backend/outputs/reports backend/outputs/logs
 
+RUN python scripts/setup_project.py all 2>/dev/null || echo "Setup skipped - run manually if needed"
+
 EXPOSE 8000
 
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 \

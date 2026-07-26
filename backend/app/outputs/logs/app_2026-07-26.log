@@ -4012,3 +4012,84 @@ asyncio.exceptions.CancelledError
 2026-07-26 19:18:04 | INFO     | backend.app.main:lifespan:34 - Shutting down LCA Platform application
 2026-07-26 19:18:04 | INFO     | uvicorn.lifespan.on:shutdown:76 - Application shutdown complete.
 2026-07-26 19:18:04 | INFO     | uvicorn.server:serve:86 - Finished server process [9040]
+2026-07-26 19:18:08 | INFO     | uvicorn.server:serve:76 - Started server process [20380]
+2026-07-26 19:18:08 | INFO     | uvicorn.lifespan.on:startup:46 - Waiting for application startup.
+2026-07-26 19:18:08 | INFO     | backend.app.main:lifespan:24 - Starting LCA Platform application
+2026-07-26 19:18:08 | INFO     | backend.app.main:lifespan:26 - Database initialized
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_mining_projects:25 - Loading mining projects from C:\Users\soumy\OneDrive\Desktop\Project\Global Rare Earth Elements Projects\mining_projects.csv
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_mining_projects:89 - Loaded mining projects: 146 rows, 51 columns
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_factory:95 - Loading factory data from C:\Users\soumy\OneDrive\Desktop\Project\Global Rare Earth Elements Projects\factory.csv
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_factory:134 - Loaded factory data: 67 rows
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_facilities_gpkg:182 - Loading facilities from C:\Users\soumy\OneDrive\Desktop\Project\Open Database on Global Coal and Metal Mining\data\facilities.gpkg
+2026-07-26 19:18:08 | WARNING  | backend.app.pipeline.data_loader:load_facilities_gpkg:190 - Could not load geopackage: y attribute access only provided for Point geometries. Falling back to CSV approach.
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_open_db_table:196 - Loading commodities.csv
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_open_db_table:198 - Loaded commodities.csv: 9426 rows, 16 columns
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_open_db_table:196 - Loading minerals.csv
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_open_db_table:198 - Loaded minerals.csv: 12292 rows, 12 columns
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_open_db_table:196 - Loading coal.csv
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_open_db_table:198 - Loaded coal.csv: 10478 rows, 10 columns
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_open_db_table:196 - Loading processing.csv
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_open_db_table:198 - Loaded processing.csv: 3979 rows, 16 columns
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_open_db_table:196 - Loading waste.csv
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_open_db_table:198 - Loaded waste.csv: 1119 rows, 13 columns
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_open_db_table:196 - Loading transport.csv
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_open_db_table:198 - Loaded transport.csv: 941 rows, 12 columns
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_open_db_table:196 - Loading reserves.csv
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_open_db_table:198 - Loaded reserves.csv: 1039 rows, 10 columns
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_open_db_table:196 - Loading ownership.csv
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_open_db_table:198 - Loaded ownership.csv: 699 rows, 7 columns
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_open_db_table:196 - Loading capacity.csv
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_open_db_table:198 - Loaded capacity.csv: 163 rows, 8 columns
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_open_db_table:196 - Loading material_ids.csv
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_open_db_table:198 - Loaded material_ids.csv: 294 rows, 7 columns
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_open_db_table:196 - Loading source_ids.csv
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_open_db_table:198 - Loaded source_ids.csv: 2483 rows, 3 columns
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_world_commodities:248 - Loading world commodities from C:\Users\soumy\OneDrive\Desktop\Project\World Mining Commodities\world_mining_commodities_clean.csv
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_world_commodities:250 - Loaded world commodities: 1982 rows
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_world_companies:256 - Loading world companies from C:\Users\soumy\OneDrive\Desktop\Project\World Mining Commodities\116_world_mining_companies_clean.csv
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_world_companies:258 - Loaded world companies: 116 rows
+2026-07-26 19:18:08 | INFO     | backend.app.pipeline.data_loader:load_commodity_info:264 - Loading commodity info from C:\Users\soumy\OneDrive\Desktop\Project\World Mining Commodities\commodity_info.xlsx
+2026-07-26 19:18:09 | INFO     | backend.app.pipeline.data_loader:load_commodity_info:266 - Loaded commodity info: 65 rows
+2026-07-26 19:18:09 | INFO     | backend.app.main:lifespan:30 - Datasets loaded successfully
+2026-07-26 19:18:09 | INFO     | uvicorn.lifespan.on:startup:60 - Application startup complete.
+2026-07-26 19:18:12 | DEBUG    | backend.app.main:log_requests:58 - GET / -> 200 (0.001s)
+2026-07-26 19:18:12 | INFO     | uvicorn.protocols.http.httptools_impl:send:496 - 127.0.0.1:55587 - "GET / HTTP/1.1" 200
+2026-07-26 19:18:12 | DEBUG    | backend.app.main:log_requests:58 - GET /static/js/app.js -> 304 (0.008s)
+2026-07-26 19:18:12 | INFO     | uvicorn.protocols.http.httptools_impl:send:496 - 127.0.0.1:55587 - "GET /js/app.js HTTP/1.1" 304
+2026-07-26 19:18:12 | DEBUG    | backend.app.main:log_requests:58 - GET /api/v1/health -> 404 (0.000s)
+2026-07-26 19:18:12 | INFO     | uvicorn.protocols.http.httptools_impl:send:496 - 127.0.0.1:55587 - "GET /api/v1/health HTTP/1.1" 404
+2026-07-26 19:19:13 | DEBUG    | backend.app.main:log_requests:58 - GET / -> 200 (0.001s)
+2026-07-26 19:19:13 | INFO     | uvicorn.protocols.http.httptools_impl:send:496 - 127.0.0.1:63010 - "GET / HTTP/1.1" 200
+2026-07-26 19:19:13 | DEBUG    | backend.app.main:log_requests:58 - GET /static/css/style.css -> 200 (0.004s)
+2026-07-26 19:19:13 | INFO     | uvicorn.protocols.http.httptools_impl:send:496 - 127.0.0.1:63010 - "GET /css/style.css?v=2 HTTP/1.1" 200
+2026-07-26 19:19:13 | DEBUG    | backend.app.main:log_requests:58 - GET /static/js/api.js -> 200 (0.004s)
+2026-07-26 19:19:13 | INFO     | uvicorn.protocols.http.httptools_impl:send:496 - 127.0.0.1:53935 - "GET /js/api.js?v=2 HTTP/1.1" 200
+2026-07-26 19:19:13 | DEBUG    | backend.app.main:log_requests:58 - GET /static/js/charts.js -> 200 (0.002s)
+2026-07-26 19:19:13 | INFO     | uvicorn.protocols.http.httptools_impl:send:496 - 127.0.0.1:63010 - "GET /js/charts.js?v=2 HTTP/1.1" 200
+2026-07-26 19:19:13 | DEBUG    | backend.app.main:log_requests:58 - GET /static/js/app.js -> 200 (0.002s)
+2026-07-26 19:19:13 | INFO     | uvicorn.protocols.http.httptools_impl:send:496 - 127.0.0.1:53935 - "GET /js/app.js?v=2 HTTP/1.1" 200
+2026-07-26 19:19:13 | DEBUG    | backend.app.main:log_requests:58 - GET /api/v1/health -> 404 (0.001s)
+2026-07-26 19:19:13 | INFO     | uvicorn.protocols.http.httptools_impl:send:496 - 127.0.0.1:53935 - "GET /api/v1/health HTTP/1.1" 404
+2026-07-26 19:21:14 | DEBUG    | backend.app.main:log_requests:58 - GET / -> 200 (0.001s)
+2026-07-26 19:21:14 | INFO     | uvicorn.protocols.http.httptools_impl:send:496 - 127.0.0.1:60838 - "GET / HTTP/1.1" 200
+2026-07-26 19:21:14 | DEBUG    | backend.app.main:log_requests:58 - GET /static/css/style.css -> 200 (0.001s)
+2026-07-26 19:21:14 | INFO     | uvicorn.protocols.http.httptools_impl:send:496 - 127.0.0.1:60838 - "GET /css/style.css?v=3 HTTP/1.1" 200
+2026-07-26 19:21:14 | DEBUG    | backend.app.main:log_requests:58 - GET /static/js/api.js -> 200 (0.004s)
+2026-07-26 19:21:14 | INFO     | uvicorn.protocols.http.httptools_impl:send:496 - 127.0.0.1:57046 - "GET /js/api.js?v=2 HTTP/1.1" 200
+2026-07-26 19:21:14 | DEBUG    | backend.app.main:log_requests:58 - GET /static/js/charts.js -> 200 (0.002s)
+2026-07-26 19:21:14 | INFO     | uvicorn.protocols.http.httptools_impl:send:496 - 127.0.0.1:60838 - "GET /js/charts.js?v=2 HTTP/1.1" 200
+2026-07-26 19:21:14 | DEBUG    | backend.app.main:log_requests:58 - GET /static/js/app.js -> 200 (0.003s)
+2026-07-26 19:21:14 | INFO     | uvicorn.protocols.http.httptools_impl:send:496 - 127.0.0.1:57046 - "GET /js/app.js?v=2 HTTP/1.1" 200
+2026-07-26 19:21:14 | DEBUG    | backend.app.main:log_requests:58 - GET /api/v1/health -> 404 (0.000s)
+2026-07-26 19:21:14 | INFO     | uvicorn.protocols.http.httptools_impl:send:496 - 127.0.0.1:57046 - "GET /api/v1/health HTTP/1.1" 404
+2026-07-26 19:21:14 | DEBUG    | backend.app.main:log_requests:58 - GET /favicon.ico -> 404 (0.001s)
+2026-07-26 19:21:14 | INFO     | uvicorn.protocols.http.httptools_impl:send:496 - 127.0.0.1:57046 - "GET /favicon.ico HTTP/1.1" 404
+2026-07-26 19:21:21 | DEBUG    | backend.app.main:log_requests:58 - POST /api/v1/auth/login -> 200 (0.046s)
+2026-07-26 19:21:21 | INFO     | uvicorn.protocols.http.httptools_impl:send:496 - 127.0.0.1:55298 - "POST /api/v1/auth/login HTTP/1.1" 200
+2026-07-26 19:21:21 | INFO     | backend.app.services.dashboard_service:get_dashboard_data:13 - Building dashboard data
+2026-07-26 19:21:21 | INFO     | backend.app.ml.models.base:load:49 - Loaded model hree_predictor
+2026-07-26 19:21:21 | INFO     | backend.app.ml.models.base:load:49 - Loaded model deposit_classifier
+2026-07-26 19:21:21 | INFO     | backend.app.ml.models.base:load:49 - Loaded model resource_estimator
+2026-07-26 19:21:21 | INFO     | backend.app.ml.models.base:load:49 - Loaded model dy_predictor
+2026-07-26 19:21:21 | DEBUG    | backend.app.main:log_requests:58 - GET /api/v1/dashboard/ -> 200 (0.230s)
+2026-07-26 19:21:21 | INFO     | uvicorn.protocols.http.httptools_impl:send:496 - 127.0.0.1:55298 - "GET /api/v1/dashboard/ HTTP/1.1" 200
