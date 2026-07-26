@@ -30,6 +30,7 @@ backend/models/*.pkl
 backend/outputs/figures/*
 backend/outputs/reports/*
 backend/outputs/logs/*
+backend/app/outputs/logs/*
 !backend/outputs/figures/.gitkeep
 !backend/outputs/reports/.gitkeep
 .idea/
