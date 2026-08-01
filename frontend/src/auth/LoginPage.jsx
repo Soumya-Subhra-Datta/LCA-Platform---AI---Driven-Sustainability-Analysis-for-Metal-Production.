@@ -166,6 +166,10 @@ export default function LoginPage({ onAuthenticated }) {
         <SignupModal
           onClose={() => setShowSignup(false)}
           onSignIn={() => setShowSignup(false)}
+          onSuccess={() => {
+            setShowSignup(false);
+            setSuccessMessage('Account created successfully. Please sign in.');
+          }}
         />
       )}
     </div>
