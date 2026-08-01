@@ -32,8 +32,8 @@
   border-radius: 20px 0 0 20px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 24px;
+  justify-content: flex-start;
+  padding: 24px 24px 24px 0;
   background: linear-gradient(180deg, #1e293b, #0f172a);
 }
 
