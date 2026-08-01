@@ -1,0 +1,59 @@
+# ============================================================
+# LCA Platform - Render Blueprint
+#
+# Deploys two services:
+#   1. lca-platform-backend  - FastAPI (Python) API + ML/LCA engine
+#   2. lca-platform-frontend - React (Vite) SPA served by Express,
+#                              proxying /api to the backend
+#
+# Usage: push this repo to GitHub, then on Render use
+#        "New > Blueprint" and select this repository.
+# ============================================================
+
+services:
+  # ------------------------------------------------------------
+  # Backend: FastAPI + ML models + LCA/circularity engines
+  # ------------------------------------------------------------
+  - type: web
+    name: lca-platform-backend
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: APP_NAME
+        value: LCA Platform
+      - key: APP_VERSION
+        value: 1.0.0
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: LOG_LEVEL
+        value: INFO
+      - key: APP_SECRET_KEY
+        generateValue: true
+      - key: APP_ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "60"
+      # TiDB Serverless (MySQL-compatible). Example:
+      # mysql+pymysql://USER:PASS@HOST:4000/lca_platform?ssl_verify_cert=true&ssl_verify_identity=true
+      - key: DATABASE_URL
+        sync: false
+
+  # ------------------------------------------------------------
+  # Frontend: React (Vite) SPA served by Express
+  # ------------------------------------------------------------
+  - type: web
+    name: lca-platform-frontend
+    runtime: node
+    plan: free
+    buildCommand: npm --prefix frontend install && npm --prefix frontend run build
+    startCommand: node frontend/server/index.js
+    envVars:
+      # Express forwards /api and /health to the backend service.
+      - key: API_PROXY_TARGET
+        fromService:
+          type: web
+          name: lca-platform-backend
+          property: hostOrURL
