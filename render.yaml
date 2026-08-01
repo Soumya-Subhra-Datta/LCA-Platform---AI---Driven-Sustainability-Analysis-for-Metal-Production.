@@ -52,8 +52,9 @@ services:
     startCommand: node frontend/server/index.js
     envVars:
       # Express forwards /api and /health to the backend service.
+      # "host" provides the backend hostname; Express prepends https://.
       - key: API_PROXY_TARGET
         fromService:
           type: web
           name: lca-platform-backend
-          property: hostOrURL
+          property: host

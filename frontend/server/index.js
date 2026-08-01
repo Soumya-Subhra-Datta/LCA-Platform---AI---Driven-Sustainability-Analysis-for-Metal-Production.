@@ -1,4 +1,5 @@
 import http from 'http';
+import https from 'https';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
@@ -9,18 +10,30 @@ const DIST_DIR = path.join(__dirname, '..', 'dist');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const API_PROXY_TARGET = process.env.API_PROXY_TARGET || process.env.VITE_API_BASE_URL || 'http://localhost:8000';
+
+function normalizeTarget(raw) {
+  if (!raw) return 'http://localhost:8000';
+  const value = String(raw).trim().replace(/\/+$/, '');
+  if (/^https?:\/\//.test(value)) return value;
+  return `https://${value}`;
+}
+
+const API_PROXY_TARGET = normalizeTarget(
+  process.env.API_PROXY_TARGET || process.env.VITE_API_BASE_URL,
+);
 
 function proxyRequest(req, res) {
   const target = new URL(API_PROXY_TARGET);
+  const isHttps = target.protocol === 'https:';
+  const client = isHttps ? https : http;
 
   const headers = { ...req.headers };
   headers.host = target.host;
 
-  const proxyReq = http.request(
+  const proxyReq = client.request(
     {
       hostname: target.hostname,
-      port: target.port || 80,
+      port: target.port || (isHttps ? 443 : 80),
       path: req.originalUrl,
       method: req.method,
       headers,
