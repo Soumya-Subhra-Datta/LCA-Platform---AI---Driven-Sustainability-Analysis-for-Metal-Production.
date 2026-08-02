@@ -12,6 +12,7 @@ const NAV_ITEMS = [
   { key: 'circularity', label: 'Circularity' },
   { key: 'sustainability', label: 'Sustainability' },
   { key: 'reports', label: 'Reports' },
+  { key: 'about', label: 'About' },
   { key: 'settings', label: 'Settings' },
 ];
 

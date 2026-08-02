@@ -9,6 +9,7 @@ import LCAPage from './dashboard/pages/LCAPage.jsx';
 import CircularityPage from './dashboard/pages/CircularityPage.jsx';
 import SustainabilityPage from './dashboard/pages/SustainabilityPage.jsx';
 import ReportsPage from './dashboard/pages/ReportsPage.jsx';
+import AboutPage from './dashboard/pages/AboutPage.jsx';
 import SettingsPage from './dashboard/pages/SettingsPage.jsx';
 import authService from './auth/authService.js';
 import './auth/auth.css';
@@ -43,6 +44,7 @@ export default function App() {
         <Route path="/circularity" element={<CircularityPage />} />
         <Route path="/sustainability" element={<SustainabilityPage />} />
         <Route path="/reports" element={<ReportsPage />} />
+        <Route path="/about" element={<AboutPage />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
     </Routes>
