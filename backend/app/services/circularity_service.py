@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from backend.app.models.circularity import CircularityMetric
 from backend.app.models.sustainability import SustainabilityScore
 from backend.app.circular.engine import CircularityCalculator, SustainabilityScorer
+from backend.app.services.dashboard_cache import invalidate as invalidate_dashboard_cache
 from backend.app.utils.logger import logger
 
 
@@ -42,6 +43,7 @@ def calculate_circularity(ore_processed_tonnes: float, waste_generated_tonnes: f
         db.commit()
         db.refresh(metric)
         result["metric_id"] = metric.id
+        invalidate_dashboard_cache()
 
     return result
 
@@ -78,6 +80,7 @@ def calculate_sustainability(carbon_kg: float, water_m3: float, energy_mj: float
         db.commit()
         db.refresh(score)
         result["score_id"] = score.id
+        invalidate_dashboard_cache()
 
     return result
 

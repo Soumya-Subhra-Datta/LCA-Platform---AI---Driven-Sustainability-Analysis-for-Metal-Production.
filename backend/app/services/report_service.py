@@ -4,6 +4,7 @@ from backend.app.models.prediction import Prediction
 from backend.app.models.environmental import EnvironmentalMetric
 from backend.app.models.circularity import CircularityMetric
 from backend.app.models.sustainability import SustainabilityScore
+from backend.app.services.dashboard_cache import invalidate as invalidate_dashboard_cache
 from backend.app.utils.logger import logger
 import json
 from datetime import datetime
@@ -33,6 +34,7 @@ def generate_report(user_id: int, report_type: str, title: str, db: Session) -> 
     db.add(report)
     db.commit()
     db.refresh(report)
+    invalidate_dashboard_cache()
 
     return {
         "report_id": report.id,

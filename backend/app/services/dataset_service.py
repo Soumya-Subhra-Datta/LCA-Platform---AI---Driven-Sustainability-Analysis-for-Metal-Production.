@@ -6,6 +6,7 @@ from backend.app.models.dataset import Dataset, DatasetMetadata
 from backend.app.pipeline.data_loader import load_all_datasets
 from backend.app.utils.logger import logger
 from backend.app.config import settings
+from backend.app.services.dashboard_cache import invalidate as invalidate_dashboard_cache
 
 
 _cached_datasets: dict[str, pd.DataFrame] = {}
@@ -23,6 +24,7 @@ def invalidate_datasets_cache():
     global _cached_datasets, _datasets_info_cache
     _cached_datasets = {}
     _datasets_info_cache = None
+    invalidate_dashboard_cache()
 
 
 def get_dataset(name: str) -> pd.DataFrame:

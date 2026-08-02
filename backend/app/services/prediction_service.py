@@ -11,6 +11,7 @@ from backend.app.ml.models.base import get_model, get_all_models, MODEL_REGISTRY
 from backend.app.ml.explainability.shap_explainer import ExplainabilityService
 from backend.app.services.dataset_service import get_dataset
 from backend.app.pipeline.preprocessor import MiningProjectsPreprocessor
+from backend.app.services.dashboard_cache import invalidate as invalidate_dashboard_cache
 from backend.app.utils.logger import logger
 
 
@@ -53,6 +54,7 @@ def _training_worker():
     db = SessionLocal()
     try:
         results = train_all_models(db)
+        invalidate_dashboard_cache()
         with _train_lock:
             _train_status.update(
                 running=False,
@@ -195,6 +197,7 @@ def run_prediction(model_name: str, input_data: dict, user_id: int = None, db: S
         db.commit()
         db.refresh(pred)
         prediction_record = pred.id
+        invalidate_dashboard_cache()
 
     return {
         "prediction_id": prediction_record,

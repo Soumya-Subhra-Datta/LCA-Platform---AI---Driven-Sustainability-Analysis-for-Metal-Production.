@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from backend.app.models.environmental import EnvironmentalMetric
 from backend.app.lca.engine import LCAEngine
 from backend.app.services.dataset_service import get_dataset
+from backend.app.services.dashboard_cache import invalidate as invalidate_dashboard_cache
 from backend.app.utils.logger import logger
 
 
@@ -40,6 +41,7 @@ def run_lca_assessment(resource_tonnes: float, grade_pct: float, mining_type: st
         db.commit()
         db.refresh(metric)
         result["metric_id"] = metric.id
+        invalidate_dashboard_cache()
 
     return result
 

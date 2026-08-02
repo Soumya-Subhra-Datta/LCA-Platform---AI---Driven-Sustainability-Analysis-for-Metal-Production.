@@ -6,10 +6,15 @@ from backend.app.models.sustainability import SustainabilityScore
 from backend.app.models.report import Report
 from backend.app.services.dataset_service import get_all_datasets_info, get_dataset
 from backend.app.services.prediction_service import get_all_model_metrics
+from backend.app.services.dashboard_cache import get_cached
 from backend.app.utils.logger import logger
 
 
 def get_dashboard_data(db: Session) -> dict:
+    return get_cached(lambda: _build_dashboard_data(db))
+
+
+def _build_dashboard_data(db: Session) -> dict:
     logger.info("Building dashboard data")
 
     dataset_info = get_all_datasets_info()
