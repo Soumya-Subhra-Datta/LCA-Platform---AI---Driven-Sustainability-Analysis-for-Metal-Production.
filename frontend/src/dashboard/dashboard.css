@@ -26,6 +26,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
     height: 100vh; overflow-y: auto; z-index: 100; transition: transform 0.3s;
 }
 .sidebar-header { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.sidebar-brand { display: flex; align-items: center; gap: 10px; }
+.sidebar-logo { width: 36px; height: 36px; object-fit: contain; flex: none; }
 .logo { font-size: 22px; font-weight: 700; color: #fff; }
 .logo span { color: var(--primary); }
 

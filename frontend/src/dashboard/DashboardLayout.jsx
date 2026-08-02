@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { api } from './api.js';
 import { ToastContainer } from './ui.jsx';
+import logo from '../assets/logo.png';
 import './dashboard.css';
 
 const NAV_ITEMS = [
@@ -67,7 +68,10 @@ export default function DashboardLayout({ onLogout }) {
     <div id="app">
       <nav className={`sidebar ${sidebarOpen ? 'open' : ''}`} id="sidebar">
         <div className="sidebar-header">
-          <h2 className="logo">LCA<span>Platform</span></h2>
+          <div className="sidebar-brand">
+            <img src={logo} alt="LCA Platform logo" className="sidebar-logo" />
+            <h2 className="logo">LCA<span>Platform</span></h2>
+          </div>
         </div>
         <ul className="nav-menu">
           {NAV_ITEMS.map(({ key, label }) => (
