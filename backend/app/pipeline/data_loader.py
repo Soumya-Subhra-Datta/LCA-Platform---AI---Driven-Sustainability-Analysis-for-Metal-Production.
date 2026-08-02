@@ -13,6 +13,25 @@ OPENDB_DIR = DATA_DIR / "Open Database on Global Coal and Metal Mining" / "data"
 WM_DIR = DATA_DIR / "World Mining Commodities"
 
 
+def _resolve_data_dir() -> Path:
+    candidates: list[Path] = []
+    for raw in (settings.DATA_DIR, settings.ORIGINAL_DATA_DIR, settings.BASE_DIR):
+        if raw:
+            candidates.append(Path(raw))
+    for cand in candidates:
+        if (cand / "Global Rare Earth Elements Projects").is_dir():
+            logger.info(f"Resolved ORIGINAL_DATA_DIR -> {cand}")
+            return cand
+    logger.warning(f"No data directory found, falling back to {candidates[0]}")
+    return candidates[0]
+
+
+DATA_DIR = _resolve_data_dir()
+REE_DIR = DATA_DIR / "Global Rare Earth Elements Projects"
+OPENDB_DIR = DATA_DIR / "Open Database on Global Coal and Metal Mining" / "data"
+WM_DIR = DATA_DIR / "World Mining Commodities"
+
+
 REE_OXIDES = ["La2O3", "Ce2O3", "Pr6O11", "Nd2O3", "Sm2O3", "Eu2O3", "Gd2O3",
               "Tb4O7", "Dy2O3", "Ho2O3", "Er2O3", "Tm2O3", "Yb2O3", "Lu2O3", "Y2O3"]
 
