@@ -1,38 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
-import * as pdfjsLib from 'pdfjs-dist';
-import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
-
-pdfjsLib.GlobalWorkerOptions.workerSrc = workerUrl;
+import { useState } from 'react';
 
 const PDF_URL = `${import.meta.env.BASE_URL}digital_twins_lca_review.pdf`;
+const PAGE1_URL = `${import.meta.env.BASE_URL}paper-page-1.png`;
 const PAPER_NAME = 'Digital Twins in Sustainability Initiatives: A Review From Life Cycle Assessment Perspective';
 
 export default function AboutPage() {
-  const canvasRef = useRef(null);
-  const [loading, setLoading] = useState(true);
-  const [renderError, setRenderError] = useState(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const pdf = await pdfjsLib.getDocument(PDF_URL).promise;
-        const page = await pdf.getPage(1);
-        const viewport = page.getViewport({ scale: 1.6 });
-        const canvas = canvasRef.current;
-        if (!canvas || cancelled) return;
-        const ctx = canvas.getContext('2d');
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
-        await page.render({ canvasContext: ctx, viewport }).promise;
-        if (!cancelled) setLoading(false);
-      } catch (err) {
-        if (!cancelled) setRenderError('Could not render the paper preview.');
-        if (!cancelled) setLoading(false);
-      }
-    })();
-    return () => { cancelled = true; };
-  }, []);
+  const [imgLoaded, setImgLoaded] = useState(false);
 
   const openPaper = () => window.open(PDF_URL, '_blank');
 
@@ -93,15 +66,19 @@ export default function AboutPage() {
           <div
             onClick={openPaper}
             title="Click to open the PDF"
-            style={{ cursor: 'pointer', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: 12, background: '#fff', boxShadow: 'var(--shadow)' }}
+            style={{ cursor: 'pointer', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: 12, background: '#fff', boxShadow: 'var(--shadow)', maxWidth: 420 }}
           >
             <div style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: 12, marginBottom: 8 }}>
               First page preview — click to open the full paper
             </div>
-            <div style={{ position: 'relative', width: '100%', overflow: 'hidden', display: 'flex', justifyContent: 'center' }}>
-              {loading && <div style={{ padding: 40, textAlign: 'center' }}><div className="spinner" /><p style={{ marginTop: 8, color: 'var(--text-secondary)' }}>Loading preview...</p></div>}
-              {renderError && <p style={{ color: 'var(--danger)', padding: 40, textAlign: 'center' }}>{renderError}</p>}
-              {!loading && !renderError && <canvas ref={canvasRef} style={{ maxWidth: '100%', height: 'auto' }} />}
+            <div style={{ overflow: 'hidden', display: 'flex', justifyContent: 'center' }}>
+              {!imgLoaded && <div style={{ padding: 40, textAlign: 'center' }}><div className="spinner" /><p style={{ marginTop: 8, color: 'var(--text-secondary)' }}>Loading preview...</p></div>}
+              <img
+                src={PAGE1_URL}
+                alt={`First page of ${PAPER_NAME}`}
+                onLoad={() => setImgLoaded(true)}
+                style={{ maxWidth: '100%', height: 'auto', display: imgLoaded ? 'block' : 'none' }}
+              />
             </div>
             <div style={{ textAlign: 'center', marginTop: 10 }}>
               <span className="btn btn-primary btn-sm">Open PDF</span>
