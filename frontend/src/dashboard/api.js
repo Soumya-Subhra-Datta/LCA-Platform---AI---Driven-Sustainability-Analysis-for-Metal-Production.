@@ -63,6 +63,7 @@ export const api = {
   predictions: {
     models: () => get('/api/v1/predictions/models'),
     train: () => post('/api/v1/predictions/train'),
+    trainStatus: () => get('/api/v1/predictions/train-status'),
     predict: (model, data) => post('/api/v1/predictions/predict', { model_name: model, input_data: data }),
     metrics: () => get('/api/v1/predictions/metrics'),
     history: (limit = 50) => get(`/api/v1/predictions/history?limit=${limit}`),

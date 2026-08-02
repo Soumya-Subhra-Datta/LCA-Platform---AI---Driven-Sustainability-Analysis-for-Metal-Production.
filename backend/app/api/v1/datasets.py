@@ -63,7 +63,6 @@ def get_dataset_stats(name: str):
 
 @router.post("/reload")
 def reload_datasets():
-    from backend.app.services.dataset_service import _cached_datasets
-    _cached_datasets.clear()
+    dataset_service.invalidate_datasets_cache()
     dataset_service.load_datasets()
     return {"message": "Datasets reloaded successfully"}

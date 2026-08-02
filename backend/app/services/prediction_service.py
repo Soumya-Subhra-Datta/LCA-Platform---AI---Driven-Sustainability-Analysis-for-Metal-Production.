@@ -1,10 +1,13 @@
 import pandas as pd
 import numpy as np
 import json
+import threading
+import time
 from datetime import datetime
 from sqlalchemy.orm import Session
+from backend.app.database import SessionLocal
 from backend.app.models.prediction import Prediction, ModelVersion
-from backend.app.ml.models.base import get_model, get_all_models, MODEL_REGISTRY
+from backend.app.ml.models.base import get_model, get_all_models, MODEL_REGISTRY, invalidate_model_cache
 from backend.app.ml.explainability.shap_explainer import ExplainabilityService
 from backend.app.services.dataset_service import get_dataset
 from backend.app.pipeline.preprocessor import MiningProjectsPreprocessor
@@ -12,6 +15,62 @@ from backend.app.utils.logger import logger
 
 
 explainer = ExplainabilityService()
+
+_train_lock = threading.Lock()
+_train_status = {
+    "running": False,
+    "status": "idle",
+    "results": None,
+    "error": None,
+    "started_at": None,
+    "finished_at": None,
+}
+
+
+def get_train_status() -> dict:
+    with _train_lock:
+        return dict(_train_status)
+
+
+def start_training():
+    with _train_lock:
+        if _train_status["running"]:
+            return dict(_train_status)
+        _train_status.update(
+            running=True,
+            status="training",
+            results=None,
+            error=None,
+            started_at=datetime.utcnow().isoformat(),
+            finished_at=None,
+        )
+    thread = threading.Thread(target=_training_worker, daemon=True)
+    thread.start()
+    return get_train_status()
+
+
+def _training_worker():
+    db = SessionLocal()
+    try:
+        results = train_all_models(db)
+        with _train_lock:
+            _train_status.update(
+                running=False,
+                status="done",
+                results=results,
+                finished_at=datetime.utcnow().isoformat(),
+            )
+    except Exception as e:
+        logger.exception("Background model training failed")
+        with _train_lock:
+            _train_status.update(
+                running=False,
+                status="error",
+                error=str(e),
+                finished_at=datetime.utcnow().isoformat(),
+            )
+    finally:
+        db.close()
 
 
 def get_available_models() -> list[dict]:
@@ -55,6 +114,8 @@ def train_all_models(db: Session) -> dict[str, dict]:
         y_dy = df.loc[X.index, "Dy2O3"]
         dy_model = DyPredictor()
         results["dy_predictor"] = dy_model.train(X, y_dy)
+
+    invalidate_model_cache()
 
     for model_name, metrics in results.items():
         mv = db.query(ModelVersion).filter(

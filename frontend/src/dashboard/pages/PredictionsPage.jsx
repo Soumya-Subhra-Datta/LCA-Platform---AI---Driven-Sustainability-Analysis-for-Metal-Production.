@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { api } from '../api.js';
 import { showToast, formatNumber, Loading, ErrorBox, Modal } from '../ui.jsx';
 
@@ -14,7 +14,9 @@ export default function PredictionsPage() {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [training, setTraining] = useState(false);
+  const [trainStatus, setTrainStatus] = useState(null);
   const [trainResult, setTrainResult] = useState(null);
+  const trainTimer = useRef(null);
   const [predicting, setPredicting] = useState(false);
   const [predResult, setPredResult] = useState(null);
   const [error, setError] = useState(null);
@@ -26,7 +28,10 @@ export default function PredictionsPage() {
     deposit_type_encoded: 0,
   });
 
-  useEffect(() => { loadMetrics(); loadHistory(); setLoading(false); }, []);
+  useEffect(() => {
+    loadMetrics(); loadHistory(); setLoading(false);
+    return () => { if (trainTimer.current) clearInterval(trainTimer.current); };
+  }, []);
 
   const loadMetrics = async () => {
     try { const data = await api.predictions.metrics(); setMetrics(data); }
@@ -38,24 +43,44 @@ export default function PredictionsPage() {
     catch { setHistory([]); }
   };
 
+  const buildResultsHtml = (results) => {
+    let html = '<div class="result-box"><h4>Training Results</h4><div class="result-grid">';
+    for (const [name, m] of Object.entries(results || {})) {
+      const score = m.r2 || m.accuracy || 0;
+      html += `<div class="result-item"><div class="label">${name}</div><div class="value">${(score * 100).toFixed(1)}%</div></div>`;
+    }
+    html += '</div></div>';
+    return html;
+  };
+
   const handleTrain = async () => {
-    setTraining(true); setTrainResult(null);
+    setTraining(true); setTrainResult(null); setTrainStatus(null);
+    const started = Date.now();
     try {
-      const res = await api.predictions.train();
-      let html = '<div class="result-box"><h4>Training Results</h4><div class="result-grid">';
-      for (const [name, m] of Object.entries(res.results)) {
-        const score = m.r2 || m.accuracy || 0;
-        html += `<div class="result-item"><div class="label">${name}</div><div class="value">${(score * 100).toFixed(1)}%</div></div>`;
-      }
-      html += '</div></div>';
-      setTrainResult(html);
-      showToast('Models trained successfully', 'success');
-      loadMetrics();
+      await api.predictions.train();
+      trainTimer.current = setInterval(async () => {
+        let st;
+        try { st = await api.predictions.trainStatus(); }
+        catch { return; }
+        setTrainStatus({ ...st, elapsed: Math.round((Date.now() - started) / 1000) });
+        if (st.status === 'done') {
+          if (trainTimer.current) clearInterval(trainTimer.current);
+          setTraining(false);
+          setTrainResult(buildResultsHtml(st.results));
+          showToast('Models trained successfully', 'success');
+          loadMetrics(); loadHistory();
+        } else if (st.status === 'error') {
+          if (trainTimer.current) clearInterval(trainTimer.current);
+          setTraining(false);
+          setTrainResult(`<p style="color:var(--danger)">Training failed: ${st.error || 'Unknown error'}</p>`);
+          showToast('Training failed', 'error');
+        }
+      }, 1500);
     } catch (err) {
-      setTrainResult(`<p style="color:var(--danger)">Training failed: ${err.message}</p>`);
+      setTraining(false);
+      setTrainResult(`<p style="color:var(--danger)">Failed to start training: ${err.message}</p>`);
       showToast('Training failed', 'error');
     }
-    setTraining(false);
   };
 
   const handlePredict = async (e) => {
@@ -95,7 +120,7 @@ export default function PredictionsPage() {
           <div className="card-header"><h3>Train Models</h3></div>
           <p style={{ marginBottom: 16, color: 'var(--text-secondary)' }}>Train all ML models on the mining projects dataset.</p>
           <button className="btn btn-primary" onClick={handleTrain} disabled={training}>
-            {training ? <><span className="spinner" /> Training...</> : 'Train All Models'}
+            {training ? <><span className="spinner" /> Training... {trainStatus?.elapsed ?? 0}s</> : 'Train All Models'}
           </button>
           <div id="train-result" style={{ marginTop: 12 }} dangerouslySetInnerHTML={{ __html: trainResult || '' }} />
         </div>

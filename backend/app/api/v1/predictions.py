@@ -14,11 +14,17 @@ def list_models():
 
 @router.post("/train")
 def train_models(db: Session = Depends(get_db)):
-    try:
-        results = prediction_service.train_all_models(db)
-        return {"message": "All models trained successfully", "results": results}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Training failed: {str(e)}")
+    status = prediction_service.start_training()
+    return {
+        "message": "Model training started in background",
+        "status": status,
+        "results": status.get("results") or {},
+    }
+
+
+@router.get("/train-status")
+def get_train_status():
+    return prediction_service.get_train_status()
 
 
 @router.post("/predict")

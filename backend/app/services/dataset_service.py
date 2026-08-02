@@ -9,6 +9,7 @@ from backend.app.config import settings
 
 
 _cached_datasets: dict[str, pd.DataFrame] = {}
+_datasets_info_cache: list | None = None
 
 
 def load_datasets() -> dict[str, pd.DataFrame]:
@@ -16,6 +17,12 @@ def load_datasets() -> dict[str, pd.DataFrame]:
     if not _cached_datasets:
         _cached_datasets = load_all_datasets()
     return _cached_datasets
+
+
+def invalidate_datasets_cache():
+    global _cached_datasets, _datasets_info_cache
+    _cached_datasets = {}
+    _datasets_info_cache = None
 
 
 def get_dataset(name: str) -> pd.DataFrame:
@@ -49,7 +56,10 @@ def get_dataset_info(name: str) -> dict:
 
 
 def get_all_datasets_info() -> list[dict]:
-    return [get_dataset_info(name) for name in get_all_dataset_names()]
+    global _datasets_info_cache
+    if _datasets_info_cache is None:
+        _datasets_info_cache = [get_dataset_info(name) for name in get_all_dataset_names()]
+    return list(_datasets_info_cache)
 
 
 def register_datasets_in_db(db: Session):

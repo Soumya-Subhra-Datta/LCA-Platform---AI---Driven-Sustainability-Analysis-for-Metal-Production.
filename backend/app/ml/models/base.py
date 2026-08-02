@@ -14,6 +14,12 @@ from backend.app.utils.logger import logger
 MODELS_DIR = Path(settings.MODEL_DIR)
 MODELS_DIR.mkdir(parents=True, exist_ok=True)
 
+_model_cache: dict[str, "BaseModel"] = {}
+
+
+def invalidate_model_cache():
+    _model_cache.clear()
+
 
 class BaseModel:
     def __init__(self, name: str):
@@ -79,7 +85,7 @@ class HREEPredictor(BaseModel):
         X_test_scaled = self.scaler.transform(X_test)
 
         self.model = GradientBoostingRegressor(
-            n_estimators=200, max_depth=6, learning_rate=0.1,
+            n_estimators=100, max_depth=6, learning_rate=0.1,
             subsample=0.8, min_samples_split=5, random_state=42
         )
         self.model.fit(X_train_scaled, y_train)
@@ -90,7 +96,7 @@ class HREEPredictor(BaseModel):
             "r2": float(r2_score(y_test, y_pred)),
             "rmse": float(np.sqrt(mean_squared_error(y_test, y_pred))),
             "mae": float(mean_absolute_error(y_test, y_pred)),
-            "cv_r2_mean": float(cross_val_score(self.model, X_train_scaled, y_train, cv=5, scoring="r2").mean()),
+            "cv_r2_mean": float(cross_val_score(self.model, X_train_scaled, y_train, cv=3, scoring="r2").mean()),
             "train_samples": len(X_train),
             "test_samples": len(X_test),
         }
@@ -135,7 +141,7 @@ class DepositClassifier(BaseModel):
         X_test_scaled = self.scaler.transform(X_test)
 
         self.model = RandomForestClassifier(
-            n_estimators=200, max_depth=10, min_samples_split=5,
+            n_estimators=100, max_depth=10, min_samples_split=5,
             random_state=42, class_weight="balanced"
         )
         self.model.fit(X_train_scaled, y_train)
@@ -195,7 +201,7 @@ class ResourceEstimator(BaseModel):
         X_test_scaled = self.scaler.transform(X_test)
 
         self.model = RandomForestRegressor(
-            n_estimators=200, max_depth=8, min_samples_split=5, random_state=42
+            n_estimators=100, max_depth=8, min_samples_split=5, random_state=42
         )
         self.model.fit(X_train_scaled, y_train)
 
@@ -205,7 +211,7 @@ class ResourceEstimator(BaseModel):
             "r2": float(r2_score(y_test, y_pred)),
             "rmse_log": float(np.sqrt(mean_squared_error(y_test, y_pred))),
             "mae_log": float(mean_absolute_error(y_test, y_pred)),
-            "cv_r2_mean": float(cross_val_score(self.model, X_train_scaled, y_train, cv=5, scoring="r2").mean()),
+            "cv_r2_mean": float(cross_val_score(self.model, X_train_scaled, y_train, cv=3, scoring="r2").mean()),
             "train_samples": len(X_train),
             "test_samples": len(X_test),
         }
@@ -248,7 +254,7 @@ class DyPredictor(BaseModel):
         X_test_scaled = self.scaler.transform(X_test)
 
         self.model = GradientBoostingRegressor(
-            n_estimators=200, max_depth=5, learning_rate=0.1,
+            n_estimators=100, max_depth=5, learning_rate=0.1,
             subsample=0.8, random_state=42
         )
         self.model.fit(X_train_scaled, y_train)
@@ -259,7 +265,7 @@ class DyPredictor(BaseModel):
             "r2": float(r2_score(y_test, y_pred)),
             "rmse": float(np.sqrt(mean_squared_error(y_test, y_pred))),
             "mae": float(mean_absolute_error(y_test, y_pred)),
-            "cv_r2_mean": float(cross_val_score(self.model, X_train_scaled, y_train, cv=5, scoring="r2").mean()),
+            "cv_r2_mean": float(cross_val_score(self.model, X_train_scaled, y_train, cv=3, scoring="r2").mean()),
             "train_samples": len(X_train),
             "test_samples": len(X_test),
         }
@@ -295,16 +301,18 @@ def get_model(name: str) -> Optional[BaseModel]:
     cls = MODEL_REGISTRY.get(name)
     if cls is None:
         return None
+    cached = _model_cache.get(name)
+    if cached is not None:
+        return cached
     model = cls()
     if not model.load():
         logger.warning(f"Model {name} not found, needs training")
+    _model_cache[name] = model
     return model
 
 
 def get_all_models() -> dict[str, BaseModel]:
     models = {}
-    for name, cls in MODEL_REGISTRY.items():
-        model = cls()
-        model.load()
-        models[name] = model
+    for name in MODEL_REGISTRY:
+        models[name] = get_model(name)
     return models
