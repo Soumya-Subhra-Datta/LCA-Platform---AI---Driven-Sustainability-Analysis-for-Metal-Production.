@@ -53,6 +53,59 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 .menu-toggle { display: none; background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text); }
 .status-badge { padding: 4px 12px; background: #e6f4ea; color: var(--accent); border-radius: 12px; font-size: 12px; font-weight: 500; }
 .user-info { font-size: 14px; color: var(--text-secondary); }
+.user-menu { position: relative; }
+.user-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text-secondary);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.user-info:hover { background: #eef2f9; color: var(--text); }
+.user-caret { font-size: 10px; opacity: 0.7; }
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 60;
+  min-width: 160px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.16);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  animation: dropdown-pop 0.15s ease;
+}
+.user-dropdown button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 12px;
+  font-size: 14px;
+  text-align: left;
+  color: #334155;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.user-dropdown button:hover { background: #f1f5f9; color: #0f172a; }
+.user-dropdown button:last-child { color: #dc2626; }
+.user-dropdown button:last-child:hover { background: #fef2f2; color: #b91c1c; }
+.user-dropdown button:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+@keyframes dropdown-pop {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
 .content-area { padding: 32px; max-width: 1400px; }
 

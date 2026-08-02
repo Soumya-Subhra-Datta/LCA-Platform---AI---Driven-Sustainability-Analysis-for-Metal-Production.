@@ -23,7 +23,9 @@ export default function DashboardLayout({ onLogout }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [apiStatus, setApiStatus] = useState('Connected');
   const [user, setUser] = useState(null);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const healthCheckRef = useRef(null);
+  const userMenuRef = useRef(null);
 
   useEffect(() => {
     const token = localStorage.getItem('lca_access_token');
@@ -40,6 +42,22 @@ export default function DashboardLayout({ onLogout }) {
       window.removeEventListener('lca:unauthorized', onUnauthorized);
     };
   }, [navigate]);
+
+  useEffect(() => {
+    if (!userMenuOpen) return undefined;
+    const onClick = (e) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target)) setUserMenuOpen(false);
+    };
+    const onKey = (e) => {
+      if (e.key === 'Escape') setUserMenuOpen(false);
+    };
+    document.addEventListener('mousedown', onClick);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onClick);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [userMenuOpen]);
 
   const checkHealth = async () => {
     try {
@@ -95,9 +113,33 @@ export default function DashboardLayout({ onLogout }) {
             <span className={`status-badge ${apiStatus === 'Connected' ? '' : 'disconnected'}`} id="api-status">
               {apiStatus}
             </span>
-            <span className="user-info" id="user-display">
-              {user?.full_name || user?.username || 'Guest'}
-            </span>
+            <div className="user-menu" ref={userMenuRef}>
+              <button
+                type="button"
+                className="user-info"
+                id="user-display"
+                onClick={() => setUserMenuOpen((o) => !o)}
+                aria-haspopup="menu"
+                aria-expanded={userMenuOpen}
+              >
+                {user?.full_name || user?.username || 'Guest'}
+                <span className="user-caret">&#9662;</span>
+              </button>
+              {userMenuOpen && (
+                <div className="user-dropdown" role="menu">
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={() => { setUserMenuOpen(false); handleNavClick('settings'); }}
+                  >
+                    Profile
+                  </button>
+                  <button type="button" role="menuitem" onClick={handleLogout}>
+                    Log Out
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </header>
 
