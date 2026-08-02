@@ -67,7 +67,14 @@ export default function DashboardLayout({ onLogout }) {
     <div id="app">
       <nav className={`sidebar ${sidebarOpen ? 'open' : ''}`} id="sidebar">
         <div className="sidebar-header">
-          <h2 className="logo">LCA<span>Platform</span></h2>
+          <button
+            type="button"
+            className="logo-link"
+            onClick={() => handleNavClick('dashboard')}
+            aria-label="Go to Dashboard"
+          >
+            <h2 className="logo">LCA<span>Platform</span></h2>
+          </button>
         </div>
         <ul className="nav-menu">
           {NAV_ITEMS.map(({ key, label }) => (
