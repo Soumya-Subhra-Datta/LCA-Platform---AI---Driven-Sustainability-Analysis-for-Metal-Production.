@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
-import heroImage from '../assets/log.jpg';
+import heroImage from '../assets/log.png';
 import authService from './authService.js';
 import { validateLogin } from './validators.js';
 import SignupModal from './SignupModal.jsx';
@@ -87,7 +87,6 @@ export default function LoginPage({ onAuthenticated }) {
 
           <div className="auth-body">
             <h2 className="auth-heading">Sign In</h2>
-            <p className="auth-subtitle">The key to happiness is to sign in.</p>
 
             {serverError && (
               <div className="alert alert-error" role="alert">
