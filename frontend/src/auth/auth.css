@@ -30,18 +30,15 @@
   position: relative;
   overflow: hidden;
   border-radius: 20px 0 0 20px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 24px 24px 24px 0;
   background: linear-gradient(180deg, #1e293b, #0f172a);
 }
 
 .auth-hero img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
-  border-radius: 10px;
+  border-radius: 0;
 }
 
 /* ---- Right panel ---- */

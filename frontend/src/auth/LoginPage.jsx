@@ -6,15 +6,7 @@ import authService from './authService.js';
 import { validateLogin } from './validators.js';
 import SignupModal from './SignupModal.jsx';
 
-const PROJECT_TITLE = (
-  <>
-    AI-Powered Life Cycle Assessment (LCA) Platform
-    <br />
-    for Promoting Circularity and Sustainability
-    <br />
-    in Metallurgy
-  </>
-);
+const PROJECT_TITLE = 'AI-Powered Life Cycle Assessment (LCA) Platform';
 
 function PasswordField({ id, label, value, onChange, error, autoComplete }) {
   const [visible, setVisible] = useState(false);
